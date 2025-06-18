@@ -3,7 +3,6 @@ package tests;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-//import java.io.File;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
