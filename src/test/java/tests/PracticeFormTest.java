@@ -5,7 +5,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 //import java.io.File;
 
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -60,12 +62,29 @@ public class PracticeFormTest {
         $("#uploadPicture").uploadFromClasspath("Img/photo_2022-12-19_20-56-33.jpg");
         //$("#uploadPicture").uploadFile(new File("src/test/resources/Img/photo_2022-12-19_20-56-33.jpg")); - один из вариантов загрузки
 
+        //Указываем штат и город
+        $("#state").click();
+        $("#stateCity-wrapper").$(byText("NCR")).click();
+        $("#city").click();
+        $("#stateCity-wrapper").$(byText("Delhi")).click();
 
+        //Нажимаем на кнопку Submit
+        $("#submit").click();
 
-
-        $("").shouldHave(text(""));
-        $("").shouldHave(text(""));
-        $("").shouldHave(text(""));
-        $("").shouldHave(text(""));
+        //Проверяем всё то, что заполнили
+        $(".modal-dialog").should(appear);
+        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+        $(".modal-body").shouldHave(
+                text("Ivan Ivanov"),
+                text("Ivanov@123.com"),
+                text("Male"),
+                text("8999999000"),
+                text("24 February,1999"),
+                text("Physics, English"),
+                text("Sports"),
+                text("photo_2022-12-19_20-56-33.jpg"),
+                text("Some address 123"),
+                text("NCR Delhi")
+                );
     }
 }
