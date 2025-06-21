@@ -4,16 +4,14 @@ import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class PracticeFormTest {
 
     @BeforeAll
-    static void SetUp(){
+    static void setUp(){
 
         Configuration.pageLoadStrategy = "eager";
         Configuration.browserSize = "1920x1080";
@@ -28,6 +26,10 @@ public class PracticeFormTest {
 
         //указываем нужную ссылку
         open("/automation-practice-form");
+
+        //убираем ненужную рекламу
+        executeJavaScript("$('footer').remove();");
+        executeJavaScript("$('#fixedban').remove();");
 
         //Указываем фамилию, имя и почту
         $("#firstName").setValue("Ivan");
@@ -73,17 +75,65 @@ public class PracticeFormTest {
         //Проверяем всё то, что заполнили
         $(".modal-dialog").should(appear);
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".modal-body").shouldHave(
-                text("Ivan Ivanov"),
-                text("Ivanov@123.com"),
-                text("Male"),
-                text("8999999000"),
-                text("24 February,1999"),
-                text("Physics, English"),
-                text("Sports"),
-                text("photo_2022-12-19_20-56-33.jpg"),
-                text("Some address 123"),
-                text("NCR Delhi")
-                );
+
+        $(".table-responsive")
+                .$(byText("Student Name"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("Ivan Ivanov"));
+
+        $(".table-responsive")
+                .$(byText("Student Email"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("Ivanov@123.com"));
+
+        $(".table-responsive")
+                .$(byText("Gender"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("Male"));
+
+        $(".table-responsive")
+                .$(byText("Mobile"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("8999999000"));
+
+        $(".table-responsive")
+                .$(byText("Date of Birth"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("24 February,1999"));
+
+        $(".table-responsive")
+                .$(byText("Subjects"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("Physics, English"));
+
+        $(".table-responsive")
+                .$(byText("Hobbies"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("Sports"));
+
+        $(".table-responsive")
+                .$(byText("Picture"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("photo_2022-12-19_20-56-33.jpg"));
+
+        $(".table-responsive")
+                .$(byText("Address"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("Some address 123"));
+
+        $(".table-responsive")
+                .$(byText("State and City"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(exactText("NCR Delhi"));
     }
 }
